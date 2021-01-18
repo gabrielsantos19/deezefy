@@ -67,6 +67,25 @@ async function put(req, res) {
   await usuario.put(ouvinte)
   .then(results => {
     console.log(results)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+
+  await pool.query(`UPDATE ouvinte SET
+                    primeiro_nome = $1, 
+                    sobrenome = $2, 
+                    telefone = $3, 
+                    usuario = $4)
+                    WHERE usuario = $4`, 
+                    [
+                      ouvinte.primeiro_nome,
+                      ouvinte.sobrenome,
+                      ouvinte.telefone,
+                      ouvinte.email
+                    ])
+  .then(results => {
+    console.log(results)
     res.status(200).end()
   })
   .catch(error => {
