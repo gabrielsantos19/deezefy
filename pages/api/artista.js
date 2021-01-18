@@ -39,7 +39,6 @@ async function post(req, res) {
   const artista = req.body
   
   await usuario.post(artista)
-  .then(results => {})
   .catch(error => {})
 
   await pool.query(`INSERT INTO artista
@@ -65,6 +64,25 @@ async function put(req, res) {
   const artista = req.body
 
   await usuario.put(artista)
+  .then(results => {
+    console.log(results)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+
+  await pool.query(`UPDATE artista SET
+                    nome_artistico = $1, 
+                    biografia = $2, 
+                    ano_de_formacao = $3, 
+                    usuario = $4
+                    WHERE usuario = $4`,
+                    [
+                        artista.nome_artistico, 
+                        artista.biografia, 
+                        artista.ano_de_formacao,
+                        artista.email
+                    ])
   .then(results => {
     console.log(results)
     res.status(200).end()
