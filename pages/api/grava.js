@@ -1,5 +1,4 @@
 import { pool } from "../../lib/pool.js"
-import * as usuario from "../../lib/usuario.js"
 
 
 export default (req, res) => {
@@ -21,14 +20,11 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
-  await pool.query(
-    `SELECT * FROM ouvinte
-    JOIN usuario ON usuario.email = ouvinte.usuario`
-  )
+  await pool.query(`SELECT * FROM grava`)
   .then(results => {
     console.log(results)
     res.status(200).json({
-      ouvintes: results.rows,
+      gravacoes: results.rows
     })
   })
   .catch(error => {
@@ -38,58 +34,63 @@ async function get(req, res) {
 }
 
 async function post(req, res) {
-  const ouvinte = req.body
-  
-  await usuario.post(ouvinte)
-  .then(results => {})
-  .catch(error => {})
+  const grava = req.body
+  let id_musica = undefined
 
   await pool.query(
-    `INSERT INTO ouvinte
-    (primeiro_nome, sobrenome, telefone, usuario)
-    VALUES ($1, $2, $3, $4)`, 
+    `INSERT INTO musica
+    (nome, duracao)
+    VALUES ($1, $2)
+    RETURNING id`, 
     [
-      ouvinte.primeiro_nome,
-      ouvinte.sobrenome,
-      ouvinte.telefone,
-      ouvinte.email
+      grava.musica.nome,
+      grava.musica.duracao
     ]
   )
   .then(results => {
     console.log(results)
-    res.status(201).end()
+    id_musica = results.rows[0].id
   })
   .catch(error => {
     console.error(error)
     res.status(500).end()
   })
+
+  if(id_musica) {
+    await pool.query(
+      `INSERT INTO grava
+      (artista, musica) 
+      VALUES ($1, $2)`,
+      [
+        grava.artista,
+        id_musica
+      ]
+    )
+    .then(results => {
+        console.log(results)
+        res.status(201).end()
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).end()
+    })
+  }
 }
 
 async function put(req, res) {
-  const ouvinte = req.body
-
-  await usuario.put(ouvinte)
-  .then(results => {
-    console.log(results)
-  })
-  .catch(error => {
-    console.error(error)
-  })
+  const {grava, novo} = req.body
 
   await pool.query(
-    `UPDATE ouvinte SET
-    primeiro_nome = $1, 
-    sobrenome = $2, 
-    telefone = $3, 
-    usuario = $4)
-    WHERE usuario = $4`, 
+    `UPDATE grava SET
+    artista = $1,
+    musica = $2
+    WHERE artista = $3 AND musica = $4`, 
     [
-      ouvinte.primeiro_nome,
-      ouvinte.sobrenome,
-      ouvinte.telefone,
-      ouvinte.email
-    ]
-  )
+      grava.artista,
+      grava.musica,
+      novo.artista,
+      novo.musica
+    ])
   .then(results => {
     console.log(results)
     res.status(200).end()
@@ -101,15 +102,15 @@ async function put(req, res) {
 }
 
 async function deleteMethod(req, res) {
-  const ouvinte = req.body
-  
+  const grava = req.body
+
   await pool.query(
-    `DELETE FROM ouvinte 
-    WHERE usuario = $1`, 
+    `DELETE FROM grava 
+    WHERE artista = $1 AND musica = $2`, 
     [
-      ouvinte.email
-    ]
-  )
+      grava.artista,
+      grava.musica
+    ])
   .then(results => {
     console.log(results)
     res.status(200).end()

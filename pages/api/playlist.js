@@ -35,16 +35,20 @@ async function get(req, res) {
 
 async function post(req, res) {
   const playlist = req.body
+  const dataObj = new Date()
+  const data = dataObj.toISOString().split('T')[0]
 
-  await pool.query(`INSERT INTO playlist
-                    (nome, status, criador, data_de_criacao)
-                    VALUES ($1, $2, $3, $4)`, 
-                    [
-                        playlist.nome, 
-                        playlist.status, 
-                        playlist.criador, 
-                        playlist.data_de_criacao
-                    ])
+  await pool.query(
+    `INSERT INTO playlist
+    (nome, status, criador, data_da_criacao)
+    VALUES ($1, $2, $3, $4)`, 
+    [
+      playlist.nome, 
+      playlist.status, 
+      playlist.criador, 
+      data
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(201).end()

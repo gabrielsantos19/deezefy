@@ -41,15 +41,16 @@ async function post(req, res) {
   await usuario.post(artista)
   .catch(error => {})
 
-  await pool.query(`INSERT INTO artista
-                    (nome_artistico, biografia, ano_de_formacao, usuario)
-                    VALUES ($1, $2, $3, $4)`, 
-                    [
-                        artista.nome_artistico, 
-                        artista.biografia, 
-                        artista.ano_de_formacao,
-                        artista.email
-                    ])
+  await pool.query(
+    `INSERT INTO artista
+    (nome_artistico, biografia, ano_de_formacao, usuario)
+    VALUES ($1, $2, $3, $4)`, 
+    [
+      artista.nome_artistico, 
+      artista.biografia, 
+      artista.ano_de_formacao,
+      artista.email
+    ])
   .then(results => {
     console.log(results)
     res.status(201).end()
