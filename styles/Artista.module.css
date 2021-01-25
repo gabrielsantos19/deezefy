@@ -1,0 +1,19 @@
+.artista {
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #7c7c7c;
+  color: #fff;
+  max-width: 100%;
+}
+
+.artista:hover {
+  background-color: teal;
+}
+
+.nome {
+  padding: 10px;
+}
+  
