@@ -23,8 +23,8 @@ export default function Login() {
     })
     .then(response => response.json())
     .then(json => {
-      setMensagem('Sucesso!')
       localStorage.setItem('token', json.token)
+      setMensagem('Sucesso!')
     })
     .catch(error => {
       setMensagem('Erro!')
