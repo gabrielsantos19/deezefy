@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Artista from '../components/artista'
 import SideBar from '../components/sidebar';
-import style from '../styles/Conta.module.css'
+import style from '../styles/Artistas.module.css'
 
 
 export default function Artistas() {
@@ -16,11 +16,13 @@ export default function Artistas() {
   return (
     <div className={ style.container }>
       <h1>Artistas</h1>
-      {
-        artistas.map(u => (
-          <Artista key={u.usuario} artista={u}></Artista>
-        ))
-      }
+      <div className={style.lista}>
+        {
+          artistas.map(u => (
+            <Artista key={u.usuario} artista={u}></Artista>
+          ))
+        }
+      </div>
 
       <SideBar></SideBar>
     </div>
