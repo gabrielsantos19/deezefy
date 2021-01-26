@@ -90,16 +90,12 @@ export default function SideBar() {
       <div className={ styles.grupo }>
         Playlists
       </div>
-      {
-        playlists.map((p) => (
-          <Link key={ p.id } href={ '/?playlist='+p.id }>
-            <a className={ styles.opcao }>
-              <MdPlaylistPlay></MdPlaylistPlay>
-              { p.nome }
-            </a>
-          </Link>
-        ))
-      }
+      <Link href='/playlist'>
+        <a className={ styles.opcao }>
+          <MdLibraryMusic></MdLibraryMusic>
+          Playlists
+        </a>
+      </Link>
       <Link href='/playlist/criar'>
         <a className={ styles.opcao }>
           <MdAddBox></MdAddBox>
