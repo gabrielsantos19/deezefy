@@ -8,15 +8,6 @@ import {
 
 
 export default function SideBar() {
-  const [playlists, setPlaylists] = useState([]);
-
-  useEffect(() => {
-  fetch('/api/playlist')
-    .then(res => res.json())
-    .then(json => setPlaylists(json.playlists))
-    .catch(error => {});
-  }, []);
-
   return (
     <nav className={styles.menu}>
       <Link href='/'>
