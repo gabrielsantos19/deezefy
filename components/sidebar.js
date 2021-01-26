@@ -21,16 +21,16 @@ export default function SideBar() {
           Início
         </a>
       </Link>
-      <Link href='/perfil'>
-        <a className={ styles.opcao }>
-          <MdPerson></MdPerson>
-          Perfil
-        </a>
-      </Link>
       <Link href='/login'>
         <a className={ styles.opcao }>
           <MdPerson></MdPerson>
           Login
+        </a>
+      </Link>
+      <Link href='/perfil'>
+        <a className={ styles.opcao }>
+          <MdPerson></MdPerson>
+          Perfil
         </a>
       </Link>
       <Link href='/musica/adicionar'>
@@ -69,12 +69,6 @@ export default function SideBar() {
         <a className={ styles.opcao }>
           <MdPerson></MdPerson>
           Cadastrar
-        </a>
-      </Link>
-      <Link href='/'>
-        <a className={ styles.opcao }>
-          <MdLibraryMusic></MdLibraryMusic>
-          Minhas músicas
         </a>
       </Link>
 
