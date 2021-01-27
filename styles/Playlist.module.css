@@ -1,9 +1,12 @@
 .playlist {
   display: flex;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  flex-direction: column;
+  margin: 5px 3px;
+  padding: 10px;
   background-color: #7c7c7c;
   color: #fff;
+  border-radius: 5px;
+  min-width: 200px;
 }
 
 .playlist:hover {
@@ -11,6 +14,15 @@
 }
 
 .nome {
-  padding: 10px;
+  flex-grow: 1;
+  font-size: 30px;
+  font-weight: bold;
 }
-  
+
+.criador {
+  font-size: 20px;
+}
+
+.data_da_criacao {
+  font-size: 15px;
+}

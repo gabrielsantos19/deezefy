@@ -5,8 +5,16 @@ import style from '../styles/Playlist.module.css'
 
 export default function Playlist({ playlist }) {
   return (
-    <div className={style.playlist}>
-      { JSON.stringify(playlist) }
+    <div className={ style.playlist }>
+      <div className={ style.nome }>
+        { playlist.nome }
+      </div>
+      <div className={ style.criador }>
+        { playlist.criador }
+      </div>
+      <div className={ style.data_da_criacao }>
+        { playlist.data_da_criacao }
+      </div>
     </div>
   )
 }
