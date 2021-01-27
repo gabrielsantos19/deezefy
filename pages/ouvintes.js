@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import style from '../styles/Conta.module.css'
+import style from '../styles/Home.module.css'
 import Ouvinte from '../components/ouvinte'
 import SideBar from '../components/sidebar';
 
@@ -16,11 +16,13 @@ export default function Ouvintes() {
   return (
     <div className={ style.container }>
       <h1>Ouvintes</h1>
-      {
-        ouvintes.map(u => (
-          <Ouvinte key={u.usuario} ouvinte={u}></Ouvinte>
-        ))
-      }
+      <div className={ style.lista }>
+        {
+          ouvintes.map(u => (
+            <Ouvinte key={u.usuario} ouvinte={u}></Ouvinte>
+          ))
+        }
+      </div>
 
       <SideBar></SideBar>
     </div>
