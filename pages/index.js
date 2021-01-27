@@ -28,11 +28,13 @@ export default function Home() {
   return (
     <div className={ styles.container }>
       <h1>Músicas</h1>
-      {
-        musicas.map(u => (
-          <Musica key={u.id} musica={u}></Musica>
-        ))
-      }
+      <div className={ styles.lista }>
+        {
+          musicas.map(u => (
+            <Musica key={u.id} musica={u}></Musica>
+          ))
+        }
+      </div>
 
       <SideBar></SideBar>
     </div>

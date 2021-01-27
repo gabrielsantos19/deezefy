@@ -3,7 +3,13 @@
   flex-direction: column;
   margin-left: 250px;
   min-height: 100vh;
-  padding: 0 0;
+  padding-left: 10px;
+}
+
+.lista {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .main {

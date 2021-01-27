@@ -3,57 +3,51 @@ import { useState } from 'react'
 import style from '../styles/Musica.module.css'
 
 
-async function atualizar(musica, setEdit) {
-  setEdit(2);
-  fetch('/api/musica', {
-    method: 'PUT', 
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      nome: m_nome,
-      senha: m_senha
-    })
-  })
-  .then(response => {
-    setEdit(0);
-  })
-}
-
 export default function Musica({ musica }) {
-  const [edit, setEdit] = useState(false);
+  const [curtida, setCurtida] = useState(false)
 
-  if(!edit) {
-    return apresentar(musica, setEdit);
-  } else {
-    return editar(musica, setEdit);
+  function curtir() {
+    fetch('/api/curte', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        artista: artista.usuario,
+        ouvinte: 'z77'
+      })
+    })
   }
-}
 
-function apresentar(musica, setEdit) {
+  let button;
+  if (curtida) {
+    button = (
+      <button className={ style.curtiu } onClick={() => setCurtida(false)}>
+        Curtiu
+      </button>
+    )
+  }
+  else {
+    button = (
+      <button className={ style.curtir } onClick={() => setCurtida(true)}>
+        Curtir
+      </button>
+    )
+  }
+
   return (
     <div className={style.musica}>
       <Link href=''>
-        <a className={style.nome}>
-          {musica.nome}, {musica.duracao}
+        <a>
+          <div className={style.nome}>
+            {musica.nome}
+          </div>
+          <div>{musica.duracao}</div>
         </a>
       </Link>
-      <div onClick={() => setEdit(true)}>
-        EDITAR
+      <div className={ style.rodape }>
+        { button }
       </div>
-    </div>
-  )
-}
-
-function editar(musica, setEdit) {
-  return (
-    <div className={style.musica}>
-      <input type='text' defaultValue={musica.nome}></input>
-      <input type='text' defaultValue={musica.duracao}></input>
-      <input type='button' 
-        onClick={() => setEdit(false)}>
-        SALVAR
-      </input>
     </div>
   )
 }
