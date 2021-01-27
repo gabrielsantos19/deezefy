@@ -33,7 +33,7 @@ export default function SideBar() {
           Perfil
         </a>
       </Link>
-      <Link href='/musica/adicionar'>
+      <Link href='/musicas/adicionar'>
         <a className={ styles.opcao }>
           <MdAddBox></MdAddBox>
           Adicionar música
@@ -75,13 +75,13 @@ export default function SideBar() {
       <div className={ styles.grupo }>
         Playlists
       </div>
-      <Link href='/playlist'>
+      <Link href='/playlists'>
         <a className={ styles.opcao }>
           <MdLibraryMusic></MdLibraryMusic>
           Playlists
         </a>
       </Link>
-      <Link href='/playlist/criar'>
+      <Link href='/playlists/criar'>
         <a className={ styles.opcao }>
           <MdAddBox></MdAddBox>
           Criar
