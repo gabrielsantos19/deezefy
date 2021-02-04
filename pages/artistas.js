@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Artista from '../components/artista'
 import SideBar from '../components/sidebar';
-import style from '../styles/Artistas.module.css'
+import style from '../styles/Home.module.css'
 
 
 export default function Artistas() {

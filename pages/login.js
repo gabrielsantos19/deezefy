@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import SideBar from '../components/sidebar';
-import style from '../styles/Login.module.css'
+import style from '../styles/Home.module.css'
 
 
 export default function Login() {
