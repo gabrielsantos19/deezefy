@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import Artista from '../../components/artista'
-import SideBar from '../../components/sidebar';
+import SideBar from '../../components/sidebar'
 import style from '../../styles/Home.module.css'
 
 
@@ -15,7 +16,14 @@ export default function Artistas() {
 
   return (
     <div className={ style.container }>
-      <h1>Artistas</h1>
+      <div className={ style.menu }>
+        <h1>Artistas</h1>
+        <Link href='/artistas/cadastro'>
+          <a>
+            <button>Cadastrar</button>
+          </a>
+        </Link>
+      </div>
       <div className={style.lista}>
         {
           artistas.map(u => (

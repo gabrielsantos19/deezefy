@@ -1,9 +1,10 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import styles from '../styles/Home.module.css';
-import Musica from '../components/musica';
-import SideBar from  '../components/sidebar';
+import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Link from  'next/link'
+import styles from '../styles/Home.module.css'
+import Musica from '../components/musica'
+import SideBar from  '../components/sidebar'
 
 
 export default function Home() {
@@ -27,7 +28,14 @@ export default function Home() {
 
   return (
     <div className={ styles.container }>
-      <h1>Músicas</h1>
+      <div className={ styles.menu }>
+        <h1>Músicas</h1>
+        <Link href='/musicas/adicionar'>
+            <a>
+              <button>Criar</button>
+            </a>
+        </Link>
+      </div>
       <div className={ styles.lista }>
         {
           musicas.map(u => (
