@@ -88,9 +88,11 @@ async function deleteMethod(req, res) {
   const playlist = req.body
   
   await pool.query(`DELETE FROM playlist 
-                    WHERE nome = $1`, 
+                    WHERE nome = $1
+                    AND criador = $2`, 
                     [
-                        playlist.nome
+                        playlist.nome,
+                        playlist.criador
                     ])
   .then(results => {
     console.log(results)

@@ -13,6 +13,10 @@
   background-color: teal;
 }
 
+.playlistDeletada {
+  display: none;
+}
+
 .nome {
   flex-grow: 1;
   font-size: 30px;
