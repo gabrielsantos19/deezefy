@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import style from '../styles/Home.module.css'
-import Ouvinte from '../components/ouvinte'
-import SideBar from '../components/sidebar';
+import style from '../../styles/Home.module.css'
+import Ouvinte from '../../components/ouvinte'
+import SideBar from '../../components/sidebar';
 
 
 export default function Ouvintes() {

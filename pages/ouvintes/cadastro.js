@@ -1,28 +1,28 @@
 import { makePublicRouterInstance } from 'next/router';
 import { useState } from 'react'
-import SideBar from '../components/sidebar';
-import style from '../styles/Cadastro.module.css'
+import SideBar from '../../components/sidebar';
+import style from '../../styles/Cadastro.module.css'
 
 
-export default function CadastrarArtista() {
+export default function Login() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const [nomeArtistico, setNomeArtistico] = useState('')
-  const [biografia, setBiografia] = useState('')
-  const [anoDeFormacao, setAnoDeFormacao] = useState('')
+  const [primeiroNome, setPrimeiroNome] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
+  const [telefone, setTelefone] = useState('')
   const [disponivel, setDisponivel] = useState(true)
 
   async function cadastrar() {
     setDisponivel(false);
-    fetch('/api/artista', {
+    fetch('/api/ouvinte', {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        nome_artistico: nomeArtistico,
-        biografia: biografia,
-        ano_de_formacao: anoDeFormacao,
+        primeiro_nome: primeiroNome,
+        sobrenome: sobrenome,
+        telefone: [telefone],
         email: email,
         senha: senha
       })
@@ -50,22 +50,22 @@ export default function CadastrarArtista() {
           onChange={ e => setSenha(e.target.value) }>
         </input>
 
-        <label>Nome artístico</label>
+        <label>Primeiro nome</label>
         <input type='text' 
-          value={ nomeArtistico }
-          onChange={ e => setNomeArtistico(e.target.value) }>
+          value={ primeiroNome }
+          onChange={ e => setPrimeiroNome(e.target.value) }>
         </input>
         
-        <label>Biografia</label>
+        <label>Sobrenome</label>
         <input type='text' 
-          value={ biografia }
-          onChange={ e => setBiografia(e.target.value) }>
+          value={ sobrenome }
+          onChange={ e => setSobrenome(e.target.value) }>
         </input>
         
-        <label>Ano de formação</label>
+        <label>Telefone</label>
         <input type='text' 
-          value={ anoDeFormacao }
-          onChange={ e => setAnoDeFormacao(e.target.value) }>
+          value={ telefone }
+          onChange={ e => setTelefone(e.target.value) }>
         </input>
 
         <button onClick={ cadastrar } 
