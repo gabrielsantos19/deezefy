@@ -14,6 +14,10 @@
   background-color: #e04700;
 }
 
+.ouvinteDeletado {
+  display: none;
+}
+
 .nome {
   flex-grow: 1;
   font-size: 30px;
