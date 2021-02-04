@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
-import style from '../styles/Ouvinte.module.css'
+import style from './Ouvinte.module.css'
 
 
 export default function Ouvinte({ ouvinte }) {

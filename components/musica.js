@@ -1,12 +1,24 @@
 import Link from 'next/link'
 import { useState } from 'react'
-import style from '../styles/Musica.module.css'
+import style from './Musica.module.css'
 
 
 export default function Musica({ musica }) {
   const [curtida, setCurtida] = useState(false)
 
-  function curtir() {
+  async function deletar(id) {
+    fetch('/api/musica', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        musica: musica
+      })
+    })
+  }
+
+  async function curtir() {
     fetch('/api/curte', {
       method: 'POST',
       headers: {
@@ -47,6 +59,9 @@ export default function Musica({ musica }) {
       </Link>
       <div className={ style.rodape }>
         { button }
+        <button>
+          Deletar
+        </button>
       </div>
     </div>
   )

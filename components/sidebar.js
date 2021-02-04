@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import styles from '../styles/SideBar.module.css'
+import styles from './SideBar.module.css'
 import { 
     MdHome, MdPerson, MdPlaylistPlay, 
     MdLibraryMusic, MdAddBox

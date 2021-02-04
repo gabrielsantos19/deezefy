@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useReducer, useState } from 'react'
-import style from '../styles/Artista.module.css'
+import style from './Artista.module.css'
 
 
 export default function Artista({ artista }) {
