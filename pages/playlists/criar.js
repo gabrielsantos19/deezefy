@@ -4,9 +4,17 @@ import styles from '../../styles/AdicionarMusica.module.css'
 
 
 export default function AdicionarMusica() {
+  const [artistas, setArtistas] = useState([])
   const [nome, setNome] = useState('');
   const [criador, setCriador] = useState('');
   const [disponivel, setDisponivel] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/artista')
+    .then(response => response.json())
+    .then(json => setArtistas(json.artistas))
+    .catch(error => {})
+  }, [])
 
   async function adicionar() {
     setDisponivel(false);
@@ -41,10 +49,15 @@ export default function AdicionarMusica() {
           </input>
 
           <label>criador</label>
-          <input 
-            value={ criador }
-            onChange={ e => setCriador(e.target.value) }>
-          </input>
+          <select onChange={ e => setCriador(e.target.value) }>
+            {
+              artistas.map(a => (
+                <option key={a.usuario} value={a.usuario}>
+                  {a.nome_artistico}
+                </option>
+              ))
+            }
+          </select>
           
           <button onClick={ adicionar } 
             disabled={ !disponivel }
