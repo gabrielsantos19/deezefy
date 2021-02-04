@@ -1,4 +1,3 @@
-import { makePublicRouterInstance } from 'next/router';
 import { useState } from 'react'
 import SideBar from '../../components/sidebar';
 import style from '../../styles/Cadastro.module.css'
@@ -34,7 +33,7 @@ export default function Login() {
   }
 
   return (
-    <div className={ style.container }>
+    <main>
       <div>
         <h1>Cadastro</h1>
   
@@ -76,6 +75,6 @@ export default function Login() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

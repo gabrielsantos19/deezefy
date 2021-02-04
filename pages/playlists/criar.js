@@ -29,7 +29,7 @@ export default function AdicionarMusica() {
   }
 
   return (
-    <div className={ styles.container }>
+    <main>
       <h1>Criar playlist</h1>
 
       <div>
@@ -55,6 +55,6 @@ export default function AdicionarMusica() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

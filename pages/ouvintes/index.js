@@ -15,7 +15,7 @@ export default function Ouvintes() {
   }, []);
 
   return (
-    <div className={ style.container }>
+    <main>
       <div className={ style.menu }>
         <h1>Ouvintes</h1>
         <Link href='/ouvintes/cadastro'>
@@ -33,6 +33,6 @@ export default function Ouvintes() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

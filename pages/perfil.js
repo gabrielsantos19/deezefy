@@ -1,7 +1,5 @@
-import { TokenExpiredError } from "jsonwebtoken";
 import { useState, useEffect } from "react";
 import SideBar from "../components/sidebar";
-import style from '../styles/Conta.module.css'
 
 
 export default function Perfil() {
@@ -17,7 +15,7 @@ export default function Perfil() {
   }
 
   return (
-    <div className={ style.container }>
+    <main>
       <h1>Perfil</h1>
       <div>
         <div>
@@ -29,6 +27,6 @@ export default function Perfil() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

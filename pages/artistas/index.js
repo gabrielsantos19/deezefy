@@ -15,7 +15,7 @@ export default function Artistas() {
   }, []);
 
   return (
-    <div className={ style.container }>
+    <main>
       <div className={ style.menu }>
         <h1>Artistas</h1>
         <Link href='/artistas/cadastro'>
@@ -33,6 +33,6 @@ export default function Artistas() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

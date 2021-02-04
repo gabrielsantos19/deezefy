@@ -1,6 +1,4 @@
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import styles from '../../styles/Home.module.css';
 import Playlist from '../../components/playlist';
 import SideBar from  '../../components/sidebar';
@@ -27,7 +25,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={ styles.container }>
+    <main>
       <div className={ styles.menu }>
         <h1>Playlists</h1>
         <Link href='/playlists/criar'>
@@ -45,6 +43,6 @@ export default function Home() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

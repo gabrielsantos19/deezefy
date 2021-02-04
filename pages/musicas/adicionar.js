@@ -40,7 +40,7 @@ export default function AdicionarMusica() {
   }
 
   return (
-    <div className={ styles.container }>
+    <main>
       <h1>Adicionar Música</h1>
 
       <div className={styles.form}>
@@ -74,6 +74,6 @@ export default function AdicionarMusica() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }

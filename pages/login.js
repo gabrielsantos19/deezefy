@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import SideBar from '../components/sidebar';
-import style from '../styles/Home.module.css'
 
 
 export default function Login() {
@@ -32,7 +31,7 @@ export default function Login() {
   }
 
   return (
-    <div className={ style.container }>
+    <main>
       <div>
         <h1>Login</h1>
 
@@ -56,6 +55,6 @@ export default function Login() {
       </div>
 
       <SideBar></SideBar>
-    </div>
+    </main>
   )
 }
