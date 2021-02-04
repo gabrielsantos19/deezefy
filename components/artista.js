@@ -1,10 +1,27 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import style from '../styles/Artista.module.css'
 
 
 export default function Artista({ artista }) {
   const [seguido, setSeguido] = useState(false)
+  const [deletado, setDeletado] = useState(false)
+
+  function remover() {
+    if(deletado) return
+
+    fetch('/api/artista', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify ({
+        email: artista.email
+      })
+    })
+    .then(response => setDeletado(true))
+    .catch(error => {})
+  }
 
   function seguir() {
     fetch('/api/segue', {
@@ -36,18 +53,21 @@ export default function Artista({ artista }) {
   }
 
   return (
-    <div className={style.artista}>
-      <div className={style.cabecalho}>
-        <div className={style.nome_artistico}>
-          { artista.nome_artistico }
-        </div>
-        { button }        
+    <div className={`${style.artista} ${deletado? style.artistaDeletado : ''}`}>
+      <div className={style.nome_artistico}>
+        { artista.nome_artistico }
       </div>
       <div className={style.ano_de_formacao}>
         { artista.ano_de_formacao }
       </div>
       <div className={style.biografia}>
         { artista.biografia }
+      </div>
+      <div className={ style.menu }>
+        { button }
+        <button onClick={ remover }>
+          Remover
+        </button>
       </div>
     </div>
   )

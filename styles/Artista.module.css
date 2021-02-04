@@ -14,36 +14,13 @@
   background-color: #e04700;
 }
 
-.cabecalho {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 5px;
+.artistaDeletado {
+  display: none;
 }
 
 .nome_artistico {
-  flex-grow: 1;
   font-size: 30px;
   font-weight: bold;
-}
-
-.seguir {
-  height: 25px;
-  font-size: 15px;
-  border: 0px;
-  border-radius: 7px;
-  padding: 0px 5px;
-  cursor: pointer;
-  background-color: white;
-}
-
-.seguindo {
-  height: 25px;
-  font-size: 15px;
-  border: 0px;
-  border-radius: 7px;
-  padding: 0px 5px;
-  cursor: pointer;
-  background-color: white;
 }
 
 .ano_de_formacao {
