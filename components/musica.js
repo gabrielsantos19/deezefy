@@ -5,17 +5,20 @@ import style from './Musica.module.css'
 
 export default function Musica({ musica }) {
   const [curtida, setCurtida] = useState(false)
+  const [deletada, setDeletada] = useState(false)
 
-  async function deletar(id) {
+  async function deletar() {
     fetch('/api/musica', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        musica: musica
+        id: musica.id
       })
     })
+    .then(response => setDeletada(true))
+    .catch(error => {})
   }
 
   async function curtir() {
@@ -48,7 +51,7 @@ export default function Musica({ musica }) {
   }
 
   return (
-    <div className={style.musica}>
+    <div className={ deletada ? style.musicaDeletada : style.musica }>
       <Link href=''>
         <a>
           <div className={style.nome}>
@@ -58,10 +61,10 @@ export default function Musica({ musica }) {
         </a>
       </Link>
       <div className={ style.rodape }>
-        { button }
-        <button>
+        <button onClick={ deletar }>
           Deletar
         </button>
+        { button }
       </div>
     </div>
   )

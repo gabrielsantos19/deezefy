@@ -61,6 +61,8 @@ async function put(req, res) {
 }
 
 async function deleteMethod(req, res) {
+  const musica = req.body
+
   await pool.query(
     `DELETE FROM musica 
     WHERE id = $1`, 
