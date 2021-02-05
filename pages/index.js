@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     let mounted = true
     
-    fetch('/api/musica')
+    fetch('/api/musicas')
     .then(results => results.json())
     .then(json => {
       if(mounted)
