@@ -21,14 +21,21 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
+  const query = req.query
+
   await pool.query(
-    `SELECT * FROM ouvinte
-    JOIN usuario ON usuario.email = ouvinte.usuario`
+    `SELECT * 
+    FROM ouvinte
+    JOIN usuario ON usuario.email = ouvinte.usuario
+    WHERE email = $1`,
+    [
+      query.email
+    ]
   )
   .then(results => {
     console.log(results)
     res.status(200).json({
-      ouvintes: results.rows,
+      ouvinte: results.rows[0]
     })
   })
   .catch(error => {
@@ -68,20 +75,20 @@ async function post(req, res) {
 async function put(req, res) {
   const ouvinte = req.body
 
-  await usuario.put(ouvinte)
-  .then(results => {
-    console.log(results)
-  })
-  .catch(error => {
-    console.error(error)
-  })
+  // await usuario.put(ouvinte)
+  // .then(results => {
+  //   console.log(results)
+  // })
+  // .catch(error => {
+  //   console.error(error)
+  // })
 
   await pool.query(
     `UPDATE ouvinte SET
     primeiro_nome = $1, 
     sobrenome = $2, 
     telefone = $3, 
-    usuario = $4)
+    usuario = $4
     WHERE usuario = $4`, 
     [
       ouvinte.primeiro_nome,

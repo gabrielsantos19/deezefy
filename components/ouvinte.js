@@ -24,9 +24,11 @@ export default function Ouvinte({ ouvinte }) {
 
   return (
     <div className={ `${style.ouvinte} ${deletado ? style.ouvinteDeletado : ''}` }>
-      <div className={ style.nome }>
-        { ouvinte.primeiro_nome } { ouvinte.sobrenome }
-      </div>
+      <Link href={ `/ouvinte?email=${ ouvinte.email }` }>
+        <a className={ style.nome }>
+          { ouvinte.primeiro_nome } { ouvinte.sobrenome }
+        </a>
+      </Link>
       <div className={ style.usuario }>
         { ouvinte.usuario }
       </div>
