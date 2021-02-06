@@ -9,7 +9,7 @@ export default function Artistas() {
   const [artistas, setArtistas] = useState([]);
 
   useEffect(() => {
-    fetch('/api/artista')
+    fetch('/api/artistas')
     .then(results => results.json())
     .then(json => setArtistas(json.artistas));
   }, []);
