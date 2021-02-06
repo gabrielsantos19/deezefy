@@ -9,7 +9,7 @@ export default function Ouvintes() {
   const [ouvintes, setOuvintes] = useState([]);
 
   useEffect(() => {
-    fetch('/api/ouvinte')
+    fetch('/api/ouvintes')
     .then(results => results.json())
     .then(json => setOuvintes(json.ouvintes));
   }, []);
