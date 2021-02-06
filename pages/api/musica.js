@@ -20,11 +20,20 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
-  await pool.query(`SELECT * FROM musica`)
+  const { id } = req.query
+  
+  await pool.query(
+    `SELECT * 
+    FROM musica
+    WHERE id = $1`,
+    [
+      id
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(200).json({
-      musicas: results.rows
+      musica: results.rows[0]
     })
   })
   .catch(error => {

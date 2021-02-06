@@ -52,7 +52,7 @@ export default function Musica({ musica }) {
 
   return (
     <div className={ deletada ? style.musicaDeletada : style.musica }>
-      <Link href=''>
+      <Link href={ `/musica?id=${ musica.id }`}>
         <a>
           <div className={style.nome}>
             {musica.nome}
