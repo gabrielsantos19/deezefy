@@ -21,12 +21,21 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
-  await pool.query(`SELECT * FROM artista
-                    JOIN usuario ON usuario.email = artista.usuario`)
+  const query = req.query
+
+  await pool.query(
+    `SELECT * 
+    FROM artista
+    JOIN usuario ON usuario.email = artista.usuario
+    WHERE email = $1`,
+    [
+      query.email
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(200).json({
-      artistas: results.rows,
+      artista: results.rows[0],
     })
   })
   .catch(error => {

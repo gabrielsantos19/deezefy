@@ -54,9 +54,11 @@ export default function Artista({ artista }) {
 
   return (
     <div className={`${style.artista} ${deletado? style.artistaDeletado : ''}`}>
-      <div className={style.nome_artistico}>
-        { artista.nome_artistico }
-      </div>
+      <Link href={ `/artista?email=${ artista.email }` }>
+        <a className={style.nome_artistico}>
+          { artista.nome_artistico }
+        </a>
+      </Link>
       <div className={style.ano_de_formacao}>
         { artista.ano_de_formacao }
       </div>
