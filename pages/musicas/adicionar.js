@@ -11,7 +11,7 @@ export default function AdicionarMusica() {
   const [disponivel, setDisponivel] = useState(true);
 
   useEffect(() => {
-    fetch('/api/artista')
+    fetch('/api/artistas')
     .then(response => response.json())
     .then(json => setArtistas(json.artistas))
     .catch(error => {})
