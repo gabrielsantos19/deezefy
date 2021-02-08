@@ -23,8 +23,14 @@ async function get(req, res) {
   const { id } = req.query
   
   await pool.query(
-    `SELECT * 
-    FROM musica
+    `WITH artistas AS (
+      SELECT array_agg(artista) AS artistas
+      FROM grava 
+      WHERE musica = $1 
+      GROUP BY musica
+    )
+    SELECT *
+    FROM musica, artistas
     WHERE id = $1`,
     [
       id
@@ -32,6 +38,7 @@ async function get(req, res) {
   )
   .then(results => {
     console.log(results)
+    
     res.status(200).json({
       musica: results.rows[0]
     })
@@ -43,7 +50,33 @@ async function get(req, res) {
 }
 
 async function post(req, res) {
-  res.status(500).end()
+  const musica = req.body
+  
+  await pool.query(
+    `WITH musica AS (
+      INSERT INTO musica (nome, duracao) 
+      VALUES ($1, $2) 
+      RETURNING id AS musica
+    ), artista AS (
+      SELECT json_array_elements_text($3) 
+      AS artista
+    )
+    INSERT INTO grava (artista, musica) 
+      SELECT * FROM artista, musica`,
+    [
+      musica.nome,
+      musica.duracao,
+      JSON.stringify(musica.artistas)
+    ]
+  )
+  .then(results => {
+    console.log(results)
+    res.status(201).end()
+  })
+  .catch(error => {
+    console.log(error)
+    res.status(500).end()
+  })
 }
 
 async function put(req, res) {
