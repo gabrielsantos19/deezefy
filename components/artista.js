@@ -1,59 +1,94 @@
 import Link from 'next/link'
-import { useReducer, useState } from 'react'
+import { useState } from 'react'
+import jwt from 'jsonwebtoken'
 import style from './Artista.module.css'
 
 
-export default function Artista({ artista }) {
-  const [seguido, setSeguido] = useState(false)
-  const [deletado, setDeletado] = useState(false)
+export default function Artista({ artista, seguido }) {
+  const [deletada, setDeletada] = useState(false)
+  const [seguindo, setSeguindo] = useState(seguido? true : false)
 
-  function remover() {
-    if(deletado) return
-
-    fetch('/api/artista', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify ({
-        email: artista.email
+  async function deletar() {
+    if(!deletada) {
+      fetch('/api/artista', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify ({
+          email: artista.email
+        })
       })
-    })
-    .then(response => setDeletado(true))
-    .catch(error => {})
+      .then(response => setDeletada(true))
+      .catch(error => {})
+    }
   }
 
-  function seguir() {
-    fetch('/api/segue', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        artista: artista.usuario,
-        ouvinte: 'z77'
+  async function seguir() {
+    const tokenRaw = localStorage.getItem('token')
+    const token = jwt.decode(tokenRaw)
+
+    if(tokenRaw) {
+      fetch('/api/segue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          artista: artista.usuario,
+          ouvinte: token.email
+        })
       })
-    })
+      .then(response => {
+        setSeguindo(true)
+      })
+      .catch(error => {})
+    }
+  }
+
+  async function deixarDeSeguir() {
+    const tokenRaw = localStorage.getItem('token')
+    const token = jwt.decode(tokenRaw)
+    
+    if(tokenRaw) {
+      fetch('/api/segue', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify({
+          artista: artista.usuario,
+          ouvinte: token.email
+        })
+      })
+      .then(response => {
+        setSeguindo(false)
+      })
+      .catch(error => {})
+    }
   }
 
   let button;
-  if (seguido) {
+  if (seguindo) {
     button = (
-      <button className={style.seguindo} onClick={() => setSeguido(!seguido)}>
+      <button className={style.seguindo} 
+          onClick={ deixarDeSeguir }>
         Seguindo
       </button>
     )
   }
   else {
     button = (
-      <button className={style.seguir} onClick={() => setSeguido(!seguido)}>
+      <button className={style.seguir} 
+          onClick={ seguir }>
         Seguir
       </button>
     )
   }
 
   return (
-    <div className={`${style.artista} ${deletado? style.artistaDeletado : ''}`}>
+    <div className={`${style.artista} ${deletada? style.artistaDeletada : ''}`}>
       <Link href={ `/artista?email=${ artista.email }` }>
         <a className={style.nome_artistico}>
           { artista.nome_artistico }
@@ -67,7 +102,7 @@ export default function Artista({ artista }) {
       </div>
       <div className={ style.menu }>
         { button }
-        <button onClick={ remover }>
+        <button onClick={ deletar }>
           Remover
         </button>
       </div>
