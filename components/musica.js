@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { useState } from 'react'
+import jwt from 'jsonwebtoken'
 import style from './Musica.module.css'
 
 
-export default function Musica({ musica }) {
-  const [curtida, setCurtida] = useState(false)
+export default function Musica({ musica, curte }) {
+  const [curtida, setCurtida] = useState(curte ? true : false)
   const [deletada, setDeletada] = useState(false)
 
   async function deletar() {
@@ -17,34 +18,71 @@ export default function Musica({ musica }) {
         id: musica.id
       })
     })
-    .then(response => setDeletada(true))
+    .then(response => {
+      setDeletada(true)
+    })
     .catch(error => {})
   }
 
   async function curtir() {
-    fetch('/api/curte', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        artista: artista.usuario,
-        ouvinte: 'z77'
+    const tokenRaw = localStorage.getItem('token')
+
+    if(tokenRaw) {
+      const token = jwt.decode(tokenRaw)
+
+      fetch('/api/curte', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          musica: musica.id,
+          ouvinte: token.email
+        })
       })
-    })
+      .then(response => {
+        setCurtida(true)
+      })
+      .catch(error => {})
+    }
+  }
+
+  async function deixarDeCurtir() {
+    const tokenRaw = localStorage.getItem('token')
+
+    if(tokenRaw) {
+      const token = jwt.decode(tokenRaw)
+
+      fetch('/api/curte', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          musica: musica.id,
+          ouvinte: token.email
+        })
+      })
+      .then(response => {
+        setCurtida(false)
+      })
+      .catch(error => {})
+    }
   }
 
   let button;
   if (curtida) {
     button = (
-      <button className={ style.curtiu } onClick={() => setCurtida(false)}>
+      <button className={ style.curtiu } 
+          onClick={ deixarDeCurtir }>
         Curtiu
       </button>
     )
   }
   else {
     button = (
-      <button className={ style.curtir } onClick={() => setCurtida(true)}>
+      <button className={ style.curtir } 
+          onClick={ curtir }>
         Curtir
       </button>
     )
