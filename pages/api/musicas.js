@@ -20,7 +20,14 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
-  await pool.query(`SELECT * FROM musica`)
+  await pool.query(
+    `SELECT
+      id, nome, duracao,
+      array_agg(artista) AS artistas
+    FROM musica
+    LEFT JOIN grava ON musica = id
+    GROUP BY id`
+  )
   .then(results => {
     console.log(results)
     res.status(200).json({

@@ -73,16 +73,14 @@ export default function Musica({ musica, curte }) {
   let button;
   if (curtida) {
     button = (
-      <button className={ style.curtiu } 
-          onClick={ deixarDeCurtir }>
+      <button onClick={ deixarDeCurtir }>
         Curtiu
       </button>
     )
   }
   else {
     button = (
-      <button className={ style.curtir } 
-          onClick={ curtir }>
+      <button onClick={ curtir }>
         Curtir
       </button>
     )
@@ -95,14 +93,21 @@ export default function Musica({ musica, curte }) {
           <div className={style.nome}>
             {musica.nome}
           </div>
-          <div>{musica.duracao}</div>
         </a>
       </Link>
-      <div className={ style.rodape }>
+      { 
+        musica.artistas.map(a => (
+          <div key={ a }>
+            { a }
+          </div>
+        )) 
+      }
+      <div>Duração: {musica.duracao}</div>
+      <div>
+        { button }
         <button onClick={ deletar }>
           Deletar
         </button>
-        { button }
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import { allowedStatusCodes } from "next/dist/lib/load-custom-routes"
 import { pool } from "../../lib/pool.js"
 
 
@@ -82,24 +83,55 @@ async function post(req, res) {
 async function put(req, res) {
   const musica = req.body
 
-  await pool.query(
-    `UPDATE musica SET
-    nome = $1,
-    duracao = $2
-    WHERE id = $3`, 
-    [
-      musica.nome,
-      musica.duracao,
-      musica.id
-    ])
-  .then(results => {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+    await client.query(`
+      DELETE FROM grava 
+      WHERE musica = $1`,
+      [
+        musica.id
+      ]
+    )
+    await client.query(`
+      WITH musica AS (
+        SELECT $1::INTEGER AS id
+      ), artistas AS (
+        SELECT json_array_elements_text($2) 
+        AS artista
+      )
+      INSERT INTO grava (artista, musica) 
+        SELECT * FROM artistas, musica`,
+      [
+        musica.id,
+        JSON.stringify(musica.artistas)
+      ]
+    )
+    await client.query(`
+      UPDATE musica SET
+        nome = $2,
+        duracao = $3
+      WHERE id = $1`,
+      [
+        musica.id,
+        musica.nome,
+        musica.duracao
+      ]
+    )
+    const results = await client.query('COMMIT')
+
     console.log(results)
     res.status(200).end()
-  })
-  .catch(error => {
+  }
+  catch(error) {
+    await client.query('ROLLBACK')
     console.error(error)
     res.status(500).end()
-  })
+  }
+  finally {
+    client.release()
+  }
 }
 
 async function deleteMethod(req, res) {
