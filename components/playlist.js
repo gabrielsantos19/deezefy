@@ -20,9 +20,11 @@ export default function Playlist({ playlist }) {
 
   return (
     <div className={ deletada ? style.playlistDeletada : style.playlist }>
-      <div className={ style.nome }>
-        { playlist.nome }
-      </div>
+      <Link href={ `/playlist?nome=${ playlist.nome }&criador=${ playlist.criador }` }>
+        <a className={ style.nome }>
+          { playlist.nome }
+        </a>
+      </Link>
       <div className={ style.criador }>
         { playlist.criador }
       </div>

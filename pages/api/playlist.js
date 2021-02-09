@@ -1,17 +1,17 @@
-import { pool } from "../../lib/pool.js"
+import { pool } from '../../lib/pool.js'
 
 
 export default (req, res) => {
-  if(req.method == "GET") {
+  if(req.method == 'GET') {
     return get(req, res)
   }
-  else if (req.method == "POST") {
+  else if (req.method == 'POST') {
     return post(req, res)
   }
-  else if (req.method == "PUT") {
+  else if (req.method == 'PUT') {
     return put(req, res)
   }
-  else if (req.method == "DELETE") {
+  else if (req.method == 'DELETE') {
     return deleteMethod(req, res)
   }
   else {
@@ -20,11 +20,22 @@ export default (req, res) => {
 }
 
 async function get(req, res) {
-  await pool.query(`SELECT * FROM playlist`)
+  const query = req.query
+
+  await pool.query(
+    `SELECT * 
+    FROM playlist
+    WHERE nome = $1
+      AND criador = $2`,
+    [
+      query.nome,
+      query.criador
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(200).json({
-      playlists: results.rows,
+      playlist: results.rows[0],
     })
   })
   .catch(error => {
@@ -60,20 +71,26 @@ async function post(req, res) {
 }
 
 async function put(req, res) {
-  const playlist = req.body
+  const antiga = req.body.antiga
+  const nova = req.body.nova
 
-  await pool.query(`UPDATE playlist SET
-                    nome = $1, 
-                    status = $2, 
-                    criador = $3, 
-                    data_de_criacao = $4
-                    WHERE nome = $1`,
-                    [
-                      playlist.nome, 
-                      playlist.status, 
-                      playlist.criador, 
-                      playlist.data_de_criacao
-                    ])
+  await pool.query(
+    `UPDATE playlist SET
+    nome = $1, 
+    status = $2, 
+    criador = $3, 
+    data_da_criacao = $4
+    WHERE nome = $5
+      AND criador = $6`,
+    [
+      nova.nome, 
+      nova.status, 
+      nova.criador, 
+      nova.data_da_criacao,
+      antiga.nome,
+      antiga.criador
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(200).end()
@@ -87,13 +104,15 @@ async function put(req, res) {
 async function deleteMethod(req, res) {
   const playlist = req.body
   
-  await pool.query(`DELETE FROM playlist 
-                    WHERE nome = $1
-                    AND criador = $2`, 
-                    [
-                        playlist.nome,
-                        playlist.criador
-                    ])
+  await pool.query(
+    `DELETE FROM playlist 
+    WHERE nome = $1
+    AND criador = $2`, 
+    [
+      playlist.nome,
+      playlist.criador
+    ]
+  )
   .then(results => {
     console.log(results)
     res.status(200).end()
