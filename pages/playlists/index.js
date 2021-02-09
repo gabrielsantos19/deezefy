@@ -5,13 +5,13 @@ import SideBar from  '../../components/sidebar';
 import Link from 'next/link';
 
 
-export default function Home() {
+export default function Playlists() {
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     let mounted = true
     
-    fetch('/api/playlist')
+    fetch('/api/playlists')
     .then(results => results.json())
     .then(json => {
       if(mounted)
