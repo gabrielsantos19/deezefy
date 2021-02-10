@@ -81,17 +81,31 @@ async function post(req, res) {
 }
 
 async function put(req, res) {
-  const musica = req.body
+  const antiga = req.body.antiga
+  const nova = req.body.nova
 
   const client = await pool.connect()
 
   try {
     await client.query('BEGIN')
+    await client.query(
+      `UPDATE musica SET
+        id = $1,
+        nome = $2,
+        duracao = $3
+      WHERE id = $4`,
+      [
+        nova.id,
+        nova.nome,
+        nova.duracao,
+        antiga.id
+      ]
+    )
     await client.query(`
       DELETE FROM grava 
       WHERE musica = $1`,
       [
-        musica.id
+        nova.id
       ]
     )
     await client.query(`
@@ -104,19 +118,8 @@ async function put(req, res) {
       INSERT INTO grava (artista, musica) 
         SELECT * FROM artistas, musica`,
       [
-        musica.id,
-        JSON.stringify(musica.artistas)
-      ]
-    )
-    await client.query(`
-      UPDATE musica SET
-        nome = $2,
-        duracao = $3
-      WHERE id = $1`,
-      [
-        musica.id,
-        musica.nome,
-        musica.duracao
+        nova.id,
+        JSON.stringify(nova.artistas)
       ]
     )
     const results = await client.query('COMMIT')
