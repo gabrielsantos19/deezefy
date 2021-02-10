@@ -1,5 +1,4 @@
 import { pool } from '../../lib/pool.js'
-import * as usuario from '../../lib/usuario.js'
 
 
 export default (req, res) => {

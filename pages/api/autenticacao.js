@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { MdTapAndPlay } from 'react-icons/md'
-import * as usuario from '../../lib/usuario.js'
+import { pool } from '../../lib/pool.js'
 
 
 export default function Autenticacao(req, res) {
@@ -16,7 +15,14 @@ export default function Autenticacao(req, res) {
 async function post(req, res) {
   const {email, senha} = req.body
   
-  await usuario.get(email)
+  await pool.query(`
+    SELECT senha
+    FROM usuario
+    WHERE email = $1`,
+    [
+      email
+    ]
+  )
   .then(result => {
     console.log(result)
     
@@ -32,7 +38,7 @@ async function post(req, res) {
       })
     }
     else {
-      res.status(500).end()
+      res.status(401).end()
     }
   })
   .catch(error => {

@@ -1,18 +1,18 @@
-import { pool } from "../../lib/pool.js"
-import * as usuario from "../../lib/usuario.js"
+import bcrypt, { hash } from 'bcrypt'
+import { pool } from '../../lib/pool.js'
 
 
 export default (req, res) => {
-  if(req.method == "GET") {
+  if(req.method == 'GET') {
     return get(req, res)
   }
-  else if (req.method == "POST") {
+  else if (req.method == 'POST') {
     return post(req, res)
   }
-  else if (req.method == "PUT") {
+  else if (req.method == 'PUT') {
     return put(req, res)
   }
-  else if (req.method == "DELETE") {
+  else if (req.method == 'DELETE') {
     return deleteMethod(req, res)
   }
   else {
@@ -46,55 +46,66 @@ async function get(req, res) {
 
 async function post(req, res) {
   const ouvinte = req.body
+  const client = await pool.connect()
   
-  await usuario.post(ouvinte)
-  .then(results => {})
-  .catch(error => {})
+  const hashedPassword = bcrypt.hashSync(ouvinte.senha, 10)
 
-  await pool.query(
-    `INSERT INTO ouvinte
-    (primeiro_nome, sobrenome, telefone, usuario)
-    VALUES ($1, $2, $3, $4)`, 
-    [
-      ouvinte.primeiro_nome,
-      ouvinte.sobrenome,
-      ouvinte.telefone,
-      ouvinte.email
-    ]
-  )
-  .then(results => {
+  try {
+    await client.query('BEGIN')
+    const usuarioInserido = await client.query(`
+      INSERT INTO usuario
+      (email, senha, data_de_nascimento)
+      VALUES ($1, $2, $3)
+      ON CONFLICT DO NOTHING`,
+      [
+        ouvinte.email,
+        hashedPassword,
+        ouvinte.data_de_nascimento
+      ]
+    )
+    const ouvinteInserido = await client.query(
+      `INSERT INTO ouvinte
+      (primeiro_nome, sobrenome, telefone, usuario)
+      VALUES ($1, $2, $3, $4)`, 
+      [
+        ouvinte.primeiro_nome,
+        ouvinte.sobrenome,
+        ouvinte.telefone,
+        ouvinte.email
+      ]
+    )
+    const results = await client.query('COMMIT')
+
     console.log(results)
     res.status(201).end()
-  })
-  .catch(error => {
+  }
+  catch(error) {
+    await client.query('ROLLBACK')
     console.error(error)
     res.status(500).end()
-  })
+  }
+  finally {
+    client.release()
+  }
 }
 
 async function put(req, res) {
-  const ouvinte = req.body
-
-  // await usuario.put(ouvinte)
-  // .then(results => {
-  //   console.log(results)
-  // })
-  // .catch(error => {
-  //   console.error(error)
-  // })
+  const antigo = req.body.antigo
+  const novo = req.body.novo
 
   await pool.query(
     `UPDATE ouvinte SET
-    primeiro_nome = $1, 
-    sobrenome = $2, 
-    telefone = $3, 
-    usuario = $4
-    WHERE usuario = $4`, 
+      primeiro_nome = $1, 
+      sobrenome = $2, 
+      telefone = $3, 
+      usuario = $4
+    WHERE usuario = $5`, 
     [
-      ouvinte.primeiro_nome,
-      ouvinte.sobrenome,
-      ouvinte.telefone,
-      ouvinte.email
+      novo.primeiro_nome,
+      novo.sobrenome,
+      novo.telefone,
+      novo.usuario,
+      antigo.usuario
     ]
   )
   .then(results => {
