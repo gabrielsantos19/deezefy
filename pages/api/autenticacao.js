@@ -16,7 +16,7 @@ async function post(req, res) {
   const {email, senha} = req.body
   
   await pool.query(`
-    SELECT senha
+    SELECT *
     FROM usuario
     WHERE email = $1`,
     [
@@ -28,7 +28,7 @@ async function post(req, res) {
     
     if(bcrypt.compareSync(senha, result.rows[0].senha)) {
       const payload = {
-        email: result.rows[0].email,
+        ...result.rows[0],
         exp: 3000
       }
       const token = jwt.sign(payload, process.env.JWT_SECRET)
