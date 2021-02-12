@@ -43,15 +43,18 @@ export default function Home() {
 
   return (
     <main>
-      <div className={ styles.menu }>
-        <h1>Músicas</h1>
-        <Link href='/musicas/adicionar'>
-            <a>
-              <button>Criar</button>
-            </a>
-        </Link>
-      </div>
+      
       <div className={ styles.lista }>
+        <div className={ styles.menu }>
+          <h1>Músicas</h1>
+          <div>
+            <Link href='/musicas/adicionar'>
+                <a>
+                  <button>Criar</button>
+                </a>
+            </Link>
+          </div>
+        </div>
         {
           musicas.map(u => (
             <Musica key={ `${ u.id } ${ curtidas.length }` } 

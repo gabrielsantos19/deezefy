@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import SideBar from  '../../components/sidebar';
-import styles from '../../styles/AdicionarMusica.module.css'
+import { useEffect, useState, Fragment } from 'react'
+import SideBar from  '../../components/sidebar'
+import style from '../../styles/Atualizar.module.css'
 
 
 export default function AdicionarMusica() {
+  const [nome, setNome] = useState('')
+  const [duracao, setDuracao] = useState('')
+  const [artistas, setArtistas] = useState([''])
+
   const [todosArtistas, setTodosArtistas] = useState([])
-  const [artistas, setArtistas] = useState([])
-  const [nome, setNome] = useState('');
-  const [duracao, setDuracao] = useState('');
-  const [disponivel, setDisponivel] = useState(true);
+  const [disponivel, setDisponivel] = useState(true)
 
   useEffect(() => {
     fetch('/api/artistas')
@@ -31,46 +32,53 @@ export default function AdicionarMusica() {
       })
     })
     .then(response => {
-      setNome('');
-      setDuracao('');
-      setDisponivel(true);
+      setNome('')
+      setDuracao('')
+      setDisponivel(true)
     })
   }
 
   function artistaInput(index) {
     return (
-      <div key={ index }>
-        <label>Artista { index+1 }</label>
-        <select 
-            key={ index }
-            value={ artistas[index] }
-            onChange={ e => setArtistaInput(index, e.target.value) }>
-          <option selected disabled hidden></option>
-          {
-            todosArtistas.map(a => (
-              <option key={index + a.usuario} value={a.usuario}>
-                {a.nome_artistico}
-              </option>
-            ))
-          }
-        </select>
-        <button onClick={ () => removerArtistaInput(index) }>
-          Remover { index }
-        </button>
-      </div>
+      <Fragment key={ index }>
+        <label className={ style.label }>
+          Artista { index+1 }
+        </label>
+        <div className={ style.bloco }>
+          <select className={ style.select }
+              value={ artistas[index] ? artistas[index] : '' }
+              onChange={ e => setArtistaInput(index, e.target.value) }
+              required>
+            <option disabled hidden></option>
+            {
+              todosArtistas.map(a => (
+                <option key={index + a.usuario} 
+                    value={a.usuario}>
+                  {a.nome_artistico}
+                </option>
+              ))
+            }
+          </select>
+          <button type='button'
+              onClick={ () => removerArtistaInput(index) }>
+            Remover
+          </button>
+        </div>
+      </Fragment>
     )
   }
 
   function setArtistaInput(index, valor) {
-    let novosArtistas = [...artistas]
-
-    if(index == artistas.length) {
-      novosArtistas.push(valor)
-    }
-    else
-    {
+    if(index < artistas.length) {
+      let novosArtistas = [...artistas]
       novosArtistas[index] = valor
+      setArtistas(novosArtistas)
     }
+  }
+
+  function pushArtistas() {
+    let novosArtistas = [...artistas]
+    novosArtistas.push('')
     setArtistas(novosArtistas)
   }
 
@@ -83,34 +91,45 @@ export default function AdicionarMusica() {
   }
 
   return (
-    <main>
-      <h1>Adicionar Música</h1>
+    <main className={ style.container }>
+      <h1>
+        Adicionar Música
+      </h1>
 
-      <div className={styles.form}>
-        <label>Nome da música</label>
+      <form className={ style.form }>
+        <label className={ style.label }>
+          Nome da música
+        </label>
         <input type='text' 
           value={ nome }        
-          onChange={ e => setNome(e.target.value) }>
+          onChange={ e => setNome(e.target.value) }
+          required>
         </input>
 
-        <label>Duração</label>
+        <label className={ style.label }>
+          Duração
+        </label>
         <input type='number' 
           value={ duracao }
-          onChange={ e => setDuracao(e.target.value) }>
+          min='0'
+          onChange={ e => setDuracao(e.target.value) }
+          required>
         </input>
         
         {
           artistas.map((a, i) => artistaInput(i))
         }
-        {
-          artistaInput(artistas.length)
-        }
-
-        <button onClick={ adicionar } 
-          disabled={ !disponivel }
-          type='submit'>Enviar
+        <button type='button'
+            onClick={ pushArtistas }>
+          Incluir outro artista
         </button>
-      </div>
+
+        <button
+            disabled={ !disponivel }
+            type='submit'>
+          Enviar
+        </button>
+      </form>
 
       <SideBar></SideBar>
     </main>

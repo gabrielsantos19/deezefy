@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import jwt from 'jsonwebtoken'
-import style from './Artista.module.css'
+import style from './Cartao.module.css'
 
 
 export default function Artista({ artista, seguido }) {
@@ -72,7 +72,7 @@ export default function Artista({ artista, seguido }) {
   let button;
   if (seguindo) {
     button = (
-      <button className={style.seguindo} 
+      <button className={ style.botao }
           onClick={ deixarDeSeguir }>
         Seguindo
       </button>
@@ -80,7 +80,7 @@ export default function Artista({ artista, seguido }) {
   }
   else {
     button = (
-      <button className={style.seguir} 
+      <button className={ style.botao }
           onClick={ seguir }>
         Seguir
       </button>
@@ -88,21 +88,22 @@ export default function Artista({ artista, seguido }) {
   }
 
   return (
-    <div className={`${style.artista} ${deletada? style.artistaDeletada : ''}`}>
+    <div className={ deletada? style.caixaDeletada : style.caixa }>
       <Link href={ `/artista?email=${ artista.email }` }>
-        <a className={style.nome_artistico}>
+        <a className={ style.texto1 }>
           { artista.nome_artistico }
         </a>
       </Link>
-      <div className={style.ano_de_formacao}>
+      <div className={ style.texto2 }>
         { artista.ano_de_formacao }
       </div>
-      <div className={style.biografia}>
+      <div className={ style.texto3 }>
         { artista.biografia }
       </div>
-      <div className={ style.menu }>
+      <div className={ style.rodape }>
         { button }
-        <button onClick={ deletar }>
+        <button className={ style.botao }
+            onClick={ deletar }>
           Remover
         </button>
       </div>

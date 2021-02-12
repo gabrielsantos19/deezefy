@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
-import style from './Ouvinte.module.css'
+import style from './Cartao.module.css'
 
 
 export default function Ouvinte({ ouvinte }) {
@@ -23,20 +23,21 @@ export default function Ouvinte({ ouvinte }) {
   }
 
   return (
-    <div className={ `${style.ouvinte} ${deletado ? style.ouvinteDeletado : ''}` }>
+    <div className={ deletado ? style.caixaDeletada : style.caixa }>
       <Link href={ `/ouvinte?email=${ ouvinte.email }` }>
-        <a className={ style.nome }>
+        <a className={ style.texto1 }>
           { ouvinte.primeiro_nome } { ouvinte.sobrenome }
         </a>
       </Link>
-      <div className={ style.usuario }>
+      <div className={ style.texto2 }>
         { ouvinte.usuario }
       </div>
-      <div className={ style.telefone }>
-        { ouvinte.telefone }
+      <div className={ style.texto3 }>
+        Telefone(s): { ouvinte.telefone.join(' · ') }
       </div>
-      <div className={ style.menu }>
-        <button onClick={ remover }>
+      <div className={ style.rodape }>
+        <button className={ style.botao }
+            onClick={ remover }>
           Remover
         </button>
       </div>

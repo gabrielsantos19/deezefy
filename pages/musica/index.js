@@ -1,13 +1,16 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import SideBar from '../../components/sidebar'
+import style from '../../styles/Atualizar.module.css'
 
 
 export default function Musica() {
+  const [antiga, setAntiga] = useState({})
+
   const [id, setId] = useState(0)
   const [nome, setNome] = useState('')
-  const [duracao, setDuracao] = useState(0)
-  const [artistas, setArtistas] = useState([])
+  const [duracao, setDuracao] = useState('')
+  const [artistas, setArtistas] = useState([''])
 
   const [todosArtistas, setTodosArtistas] = useState([])
   const [disponivel, setDisponivel] = useState(true)
@@ -19,6 +22,8 @@ export default function Musica() {
     fetch(`/api/musica?id=${ query.id }`)
     .then(response => response.json())
     .then(json => {
+      setAntiga(json.musica)
+
       setId(json.musica.id)
       setNome(json.musica.nome)
       setDuracao(json.musica.duracao)
@@ -42,57 +47,67 @@ export default function Musica() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: id,
-        nome: nome,
-        duracao: duracao,
-        artistas: artistas
+        antiga: antiga,
+        nova: {
+          id: id,
+          nome: nome,
+          duracao: duracao,
+          artistas: artistas
+        }
       })
     })
     .then(response => {
+      console.log(response)
+      if(response.status == 200)
+      {
+        setAntiga({...nova})
+      }
       setDisponivel(true);
     })
     .catch(error => {})
   }
 
-  function submitHandler(e) {
-    e.preventDefault()
-    putMusica()
-  }
-
   function artistaInput(index) {
     return (
-      <div key={ index }>
-        <label>Artista { index+1 }</label>
-        <select 
-            key={ index }
-            value={ index + 1 > artistas.length ? '' : artistas[index] }
-            onChange={ e => setArtistaInput(index, e.target.value) }>
-          <option disabled hidden></option>
-          {
-            todosArtistas.map(a => (
-              <option key={index + a.usuario} value={a.usuario}>
-                {a.nome_artistico}
-              </option>
-            ))
-          }
-        </select>
-        <button onClick={ () => removerArtistaInput(index) }>
-          Remover { index }
-        </button>
-      </div>
+      <Fragment key={ index }>
+        <label className={ style.label }>
+          Artista { index+1 }
+        </label>
+        <div className={ style.bloco }>
+          <select className={ style.select }
+              value={ artistas[index] ? artistas[index] : '' }
+              onChange={ e => setArtistaInput(index, e.target.value) }
+              required>
+            <option disabled hidden></option>
+            {
+              todosArtistas.map(a => (
+                <option key={index + a.usuario} 
+                    value={a.usuario}>
+                  {a.nome_artistico}
+                </option>
+              ))
+            }
+          </select>
+          <button type='button'
+              onClick={ () => removerArtistaInput(index) }>
+            Remover
+          </button>
+        </div>
+      </Fragment>
     )
   }
 
   function setArtistaInput(index, valor) {
-    let novosArtistas = [...artistas]
-
-    if(index == artistas.length) {
-      novosArtistas.push(valor)
-    }
-    else
-    {
+    if(index < artistas.length) {
+      let novosArtistas = [...artistas]
       novosArtistas[index] = valor
+      setArtistas(novosArtistas)
     }
+  }
+
+  function pushArtistas() {
+    let novosArtistas = [...artistas]
+    novosArtistas.push('')
     setArtistas(novosArtistas)
   }
 
@@ -105,40 +120,43 @@ export default function Musica() {
   }
 
   return (
-    <main>
+    <main className={ style.container }>
       <h1>
         Atualizar Música
       </h1>
-      <div>
-        <form key={ nome }
-            onSubmit={ submitHandler }>
-          <label>id:</label>
-          <input value={ id }
-            onChange={ e => setId(e.target.value) }>
-          </input>
 
-          <label>nome:</label>
-          <input value={ nome }
-            onChange={ e => setNome(e.target.value) }>
-          </input>
+      <form className={ style.form }>
+        <label className={ style.label }>
+          Nome da música
+        </label>
+        <input type='text' 
+          value={ nome }        
+          onChange={ e => setNome(e.target.value) }
+          required>
+        </input>
 
-          <label>duração:</label>
-          <input value={ duracao }
-            onChange={ e => setDuracao(e.target.value) }>
-          </input>
+        <label className={ style.label }>
+          Duração
+        </label>
+        <input type='number' 
+          value={ duracao }
+          min='0'
+          onChange={ e => setDuracao(e.target.value) }
+          required>
+        </input>
+        
+        {
+          artistas.map((a, i) => artistaInput(i))
+        }
+        <button type='button'
+            onClick={ pushArtistas }>
+          Incluir outro artista
+        </button>
 
-          {
-            artistas.map((a, i) => artistaInput(i))
-          }
-          {
-            artistaInput(artistas.length)
-          }
-
-          <button type='submit'>
-            Salvar
-          </button>
-        </form>
-      </div>
+        <button type='submit'>
+          Salvar
+        </button>
+      </form>
 
       <SideBar></SideBar>
     </main>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import jwt from 'jsonwebtoken'
-import SideBar from '../components/sidebar';
+import SideBar from '../components/sidebar'
+import style from '../styles/Atualizar.module.css'
 
 
 export default function Login() {
@@ -8,12 +9,12 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [status, setStatus] = useState(1);
   const [mensagem, setMensagem] = useState('');
-  const [token, setToken] = useState()
+  const [token, setToken] = useState({})
 
   useEffect(() => {
     const tokenRaw = localStorage.getItem('token')
     if(tokenRaw) {
-      setToken(tokenRaw)
+      setToken(jwt.decode(tokenRaw))
     }
   }, [])
   
@@ -34,7 +35,7 @@ export default function Login() {
       localStorage.setItem('token', json.token)
       const tokenRaw = localStorage.getItem('token')
       if(tokenRaw) {
-        setToken(tokenRaw)
+        setToken(jwt.decode(tokenRaw))
         setMensagem('Sucesso!')
       }
     })
@@ -47,7 +48,8 @@ export default function Login() {
     localStorage.removeItem('token')
     const tokenRaw = localStorage.getItem('token')
     if(!tokenRaw) {
-      setToken()
+      setMensagem()
+      setToken({})
     }
   }
 
@@ -57,35 +59,44 @@ export default function Login() {
   }
 
   return (
-    <main>
-      <div>
-        <h1>Login</h1>
+    <main className={ style.container }>
+      <h1>Login</h1>
 
-        <div>Atual: {JSON.stringify(token)}</div>
-        <form onSubmit={ handleSubmit }>
-          <label>E-mail</label>
-          <input type='text' 
-            value={ email }        
-            onChange={ e => setEmail(e.target.value) }>
-          </input>
-          <label>Senha</label>
-          <input type='text' 
-            value={ senha }
-            onChange={ e => setSenha(e.target.value) }>
-          </input>
-          <button
-              disabled={ !status }
-              type='submit'>
-            Entrar
-          </button>
-        </form>
-        <button onClick={ sair }>
+      <h2>{ mensagem }</h2>
+      
+      {
+        token ? (
+          <div>
+            Logado como: { token.email }
+          </div>
+        ) : ''
+      }
+      <form className={ style.form }
+          onSubmit={ handleSubmit }>
+        <label>E-mail</label>
+        <input type='text' 
+          value={ email }        
+          onChange={ e => setEmail(e.target.value) }>
+        </input>
+
+        <label>Senha</label>
+        <input type='text' 
+          value={ senha }
+          onChange={ e => setSenha(e.target.value) }>
+        </input>
+
+        <button
+            disabled={ !status }
+            type='submit'>
+          Entrar
+        </button>
+
+        <button type='button'
+          onClick={ sair }>
           Sair
         </button>
-        <h2>
-          { mensagem }
-        </h2>
-      </div>
+      </form>
+        
 
       <SideBar></SideBar>
     </main>

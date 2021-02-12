@@ -35,15 +35,18 @@ export default function Artistas() {
 
   return (
     <main>
-      <div className={ style.menu }>
-        <h1>Artistas</h1>
-        <Link href='/artistas/cadastro'>
-          <a>
-            <button>Cadastrar</button>
-          </a>
-        </Link>
-      </div>
+      
       <div className={ style.lista }>
+        <div className={ style.menu }>
+          <h1>Artistas</h1>
+          <div>
+            <Link href='/artistas/cadastro'>
+              <a>
+                <button>Cadastrar</button>
+              </a>
+            </Link>
+          </div>
+        </div>
         {
           artistas.map(u => (
             <Artista key={u.usuario + seguidos.length} 

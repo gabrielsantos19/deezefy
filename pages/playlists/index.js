@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import styles from '../../styles/Home.module.css';
-import Playlist from '../../components/playlist';
-import SideBar from  '../../components/sidebar';
-import Link from 'next/link';
+import { useEffect, useState } from 'react'
+import Playlist from '../../components/playlist'
+import SideBar from  '../../components/sidebar'
+import Link from 'next/link'
+import style from '../../styles/Home.module.css'
 
 
 export default function Playlists() {
@@ -26,15 +26,18 @@ export default function Playlists() {
 
   return (
     <main>
-      <div className={ styles.menu }>
-        <h1>Playlists</h1>
-        <Link href='/playlists/criar'>
-          <a>
-            <button>Criar</button>
-          </a>
-        </Link>
-      </div>
-      <div className={ styles.lista }>
+      
+      <div className={ style.lista }>
+        <div className={ style.menu }>
+          <h1>Playlists</h1>
+          <div>
+            <Link href='/playlists/criar'>
+              <a>
+                <button>Criar</button>
+              </a>
+            </Link>
+          </div>
+        </div>
         {
           playlists.map(u => (
             <Playlist key={u.nome + u.criador} playlist={u}></Playlist>

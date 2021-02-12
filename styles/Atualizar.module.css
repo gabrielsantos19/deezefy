@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  
+}
+
+.bloco {
+  display: flex;
+}
+
+.label {
+  padding-top: 10px;
+}
+
+.input {
+  flex-grow: 1;
+}
+
+.select {
+  flex-grow: 1;
+}
+
+.botaoAdicionarTelefone {
+
+}

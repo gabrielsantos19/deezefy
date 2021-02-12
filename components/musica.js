@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import jwt from 'jsonwebtoken'
-import style from './Musica.module.css'
+import style from './Cartao.module.css'
 
 
 export default function Musica({ musica, curte }) {
@@ -41,7 +41,9 @@ export default function Musica({ musica, curte }) {
         })
       })
       .then(response => {
-        setCurtida(true)
+        if(response.status == 201) {
+          setCurtida(true)
+        }
       })
       .catch(error => {})
     }
@@ -73,39 +75,45 @@ export default function Musica({ musica, curte }) {
   let button;
   if (curtida) {
     button = (
-      <button onClick={ deixarDeCurtir }>
+      <button className={ style.botao } onClick={ deixarDeCurtir }>
         Curtiu
       </button>
     )
   }
   else {
     button = (
-      <button onClick={ curtir }>
+      <button className={ style.botao } onClick={ curtir }>
         Curtir
       </button>
     )
   }
 
   return (
-    <div className={ deletada ? style.musicaDeletada : style.musica }>
+    <div className={ deletada ? style.caixaDeletada : style.caixa }>
       <Link href={ `/musica?id=${ musica.id }`}>
-        <a>
-          <div className={style.nome}>
-            {musica.nome}
-          </div>
+        <a title={ musica.nome} 
+            className={ style.texto1 }>
+          { musica.nome }
         </a>
       </Link>
+
       { 
         musica.artistas.map(a => (
-          <div key={ a }>
+          <div className={ style.texto2 }
+              key={ a }>
             { a }
           </div>
         )) 
       }
-      <div>Duração: {musica.duracao}</div>
-      <div>
+
+      <div className={ style.texto3 }>
+        Duração: { musica.duracao }
+      </div>
+
+      <div className={ style.rodape }>
         { button }
-        <button onClick={ deletar }>
+        <button className={ style.botao }
+            onClick={ deletar }>
           Deletar
         </button>
       </div>

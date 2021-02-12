@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
-import style from './Playlist.module.css'
+import style from './Cartao.module.css'
 
 
 export default function Playlist({ playlist }) {
@@ -19,20 +19,21 @@ export default function Playlist({ playlist }) {
   }
 
   return (
-    <div className={ deletada ? style.playlistDeletada : style.playlist }>
+    <div className={ deletada ? style.caixaDeletada : style.caixa }>
       <Link href={ `/playlist?nome=${ playlist.nome }&criador=${ playlist.criador }` }>
-        <a className={ style.nome }>
+        <a className={ style.texto1 }>
           { playlist.nome }
         </a>
       </Link>
-      <div className={ style.criador }>
+      <div className={ style.texto2 }>
         { playlist.criador }
       </div>
-      <div className={ style.data_da_criacao }>
+      <div className={ style.texto3 }>
         { playlist.data_da_criacao }
       </div>
-      <div>
-        <button onClick={ deletar }>
+      <div className={ style.rodape }>
+        <button className={ style.botao }
+            onClick={ deletar }>
           Deletar
         </button>
       </div>

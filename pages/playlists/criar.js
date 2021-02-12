@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 import SideBar from  '../../components/sidebar';
-import styles from '../../styles/AdicionarMusica.module.css'
+import style from '../../styles/Atualizar.module.css'
 
 
 export default function AdicionarMusica() {
-  const [artistas, setArtistas] = useState([])
-  const [nome, setNome] = useState('');
-  const [criador, setCriador] = useState('');
-  const [disponivel, setDisponivel] = useState(true);
+  const [nome, setNome] = useState('')
+  const [status, setStatus] = useState('')
+  const [criador, setCriador] = useState('')
+  const [dataDaCriacao, setDataDaCriacao] = useState(null)
+
+  const [todosUsuarios, setTodosUsuarios] = useState([])
+  const [disponivel, setDisponivel] = useState(true)
 
   useEffect(() => {
-    fetch('/api/artistas')
+    fetch('/api/usuarios')
     .then(response => response.json())
-    .then(json => setArtistas(json.artistas))
+    .then(json => setTodosUsuarios(json.usuarios))
     .catch(error => {})
   }, [])
 
@@ -25,8 +28,9 @@ export default function AdicionarMusica() {
       },
       body: JSON.stringify({
         nome: nome,
+        status: status,
         criador: criador,
-        status: 'ativo'
+        data_da_criacao: dataDaCriacao
       })
     })
     .then(response => {
@@ -36,36 +40,65 @@ export default function AdicionarMusica() {
     })
   }
 
+  function handleSubmit(e) {
+    e.preventDefault()
+    adicionar()
+  }
+
   return (
-    <main>
+    <main className={ style.container }>
       <h1>Criar playlist</h1>
 
-      <div>
-        <div className={styles.form}>
-          <label>Nome</label>
-          <input type='text' 
-            value={ nome }        
-            onChange={ e => setNome(e.target.value) }>
-          </input>
+      <form className={ style.form }
+          onSubmit={ handleSubmit }>
+        <label className={ style.label }>
+          Nome
+        </label>
+        <input value={ nome }
+          onChange={ e => setNome(e.target.value) }>
+        </input>
 
-          <label>criador</label>
-          <select onChange={ e => setCriador(e.target.value) }>
-            {
-              artistas.map(a => (
-                <option key={a.usuario} value={a.usuario}>
-                  {a.nome_artistico}
-                </option>
-              ))
-            }
-          </select>
+        <label className={ style.label }>
+          Status
+        </label>
+        <select value={ status }
+            onChange={ e => setStatus(e.target.value) }
+            required>
+          <option disabled hidden></option>
+          <option value='ativo'>Ativo</option>
+          <option value='inativo'>Inativo</option>
+        </select>
+
+        <label className={ style.label }>
+          Criador
+        </label>
+        <select value={ criador }
+            onChange={ e => setCriador(e.target.value) }
+            required>
+          <option disabled hidden></option>
+          {
+            todosUsuarios.map(u => (
+              <option key={ u.email } value={ u.email }>
+                { u.email }
+              </option>
+            ))
+          }
+        </select>
+
+        <label className={ style.label }>
+          Data da criação
+        </label>
+        <input type='date'
+          value={ dataDaCriacao ? dataDaCriacao : '' }
+          onChange={ e => setDataDaCriacao(e.target.value) }>
+        </input>
           
-          <button onClick={ adicionar } 
+        <button
             disabled={ !disponivel }
             type='submit'>
-            Enviar
-          </button>
-        </div>
-      </div>
+          Criar playlist
+        </button>
+      </form>
 
       <SideBar></SideBar>
     </main>

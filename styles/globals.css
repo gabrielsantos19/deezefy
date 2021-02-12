@@ -18,6 +18,5 @@ a {
 main {
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
-  padding-left: 10px;
+  margin: 70px 10px 10px 0px;
 }

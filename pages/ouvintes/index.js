@@ -16,15 +16,18 @@ export default function Ouvintes() {
 
   return (
     <main>
-      <div className={ style.menu }>
-        <h1>Ouvintes</h1>
-        <Link href='/ouvintes/cadastro'>
-          <a>
-            <button>Cadastrar</button>
-          </a>
-        </Link>
-      </div>
+      
       <div className={ style.lista }>
+        <div className={ style.menu }>
+          <h1>Ouvintes</h1>
+          <div>
+            <Link href='/ouvintes/cadastro'>
+              <a>
+                <button>Cadastrar</button>
+              </a>
+            </Link>
+          </div>
+        </div>
         {
           ouvintes.map(u => (
             <Ouvinte key={u.usuario} ouvinte={u}></Ouvinte>
