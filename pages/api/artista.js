@@ -93,29 +93,59 @@ async function put(req, res) {
   const antigo = req.body.antigo
   const novo = req.body.novo
 
-  await pool.query(
-    `UPDATE artista SET
-      nome_artistico = $1, 
-      biografia = $2, 
-      ano_de_formacao = $3, 
-      usuario = $4
-    WHERE usuario = $5`,
-    [
-      novo.nome_artistico, 
-      novo.biografia, 
-      novo.ano_de_formacao,
-      novo.usuario,
-      antigo.usuario
-    ]
-  )
-  .then(results => {
+  const client = await pool.connect()
+  
+  let hash
+  if(novo.senha) {
+    hash = bcrypt.hashSync(novo.senha, 10)
+  }
+  else {
+    hash = antigo.senha
+  }
+
+  try {
+    await client.query('BEGIN')
+    await client.query(
+      `UPDATE artista SET
+        nome_artistico = $1, 
+        biografia = $2, 
+        ano_de_formacao = $3, 
+        usuario = $4
+      WHERE usuario = $5`,
+      [
+        novo.nome_artistico, 
+        novo.biografia, 
+        novo.ano_de_formacao,
+        novo.usuario,
+        antigo.usuario
+      ]
+    )
+    await client.query(
+      `UPDATE usuario SET
+        email = $1,
+        senha = $2,
+        data_de_nascimento = $3
+      WHERE email = $4`, 
+      [
+        novo.email,
+        hash,
+        novo.data_de_nascimento,
+        antigo.email
+      ]    
+    )
+    const results = await client.query('COMMIT')
+
     console.log(results)
     res.status(200).end()
-  })
-  .catch(error => {
+  }
+  catch(error) {
+    await client.query('ROLLBACK')
     console.error(error)
     res.status(500).end()
-  })
+  }
+  finally {
+    client.release()
+  }
 }
 
 async function deleteMethod(req, res) {

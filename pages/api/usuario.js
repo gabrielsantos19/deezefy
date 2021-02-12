@@ -48,32 +48,7 @@ async function post(req, res) {
 }
 
 async function put(req, res) {
-  const antigo = req.body.antigo
-  const novo = req.body.novo
-
-  const hash = bcrypt.hashSync(usuario.senha, 10)
-
-  await pool.query(
-    `UPDATE usuario SET
-      email = $1,
-      senha = $2,
-      data_de_nascimento = $3
-    WHERE email = $4`, 
-    [
-      novo.email,
-      hash,
-      novo.data_de_nascimento,
-      antigo.email
-    ]
-  )
-  .then(results => {
-    console.log(results)
-    res.status(200).end()
-  })
-  .catch(error => {
-    console.error(error)
-    res.status(500).end()
-  })
+  res.status(500).end()
 }
 
 async function deleteMethod(req, res) {
@@ -81,7 +56,7 @@ async function deleteMethod(req, res) {
   
   await pool.query(
     `DELETE FROM usuario 
-    WHERE usuario = $1`, 
+    WHERE email = $1`, 
     [
       usuario.email
     ]
