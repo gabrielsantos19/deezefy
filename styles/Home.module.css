@@ -6,6 +6,26 @@
   width: 200px;
 }
 
+.titulo {
+  font-size: 40px;
+}
+
+.botaoCriar {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  background-color: grey;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.botaoCriar:hover {
+  background-color: #e04700;
+}
+
 .lista {
   display: flex;
   flex-direction: row;

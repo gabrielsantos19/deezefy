@@ -97,14 +97,9 @@ export default function Musica({ musica, curte }) {
         </a>
       </Link>
 
-      { 
-        musica.artistas.map(a => (
-          <div className={ style.texto2 }
-              key={ a }>
-            { a }
-          </div>
-        )) 
-      }
+      <div className={ style.texto2 }>
+        Artista(s): { musica.artistas.join(' · ') }
+      </div>
 
       <div className={ style.texto3 }>
         Duração: { musica.duracao }

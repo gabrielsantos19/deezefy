@@ -46,7 +46,6 @@ export default function Cadastro() {
   }
 
   function setTelefone(index, valor) {
-    console.log(telefones)
     if(index < telefones.length) {
       let novosTelefones = [...telefones]
       novosTelefones[index] = valor

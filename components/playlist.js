@@ -25,11 +25,14 @@ export default function Playlist({ playlist }) {
           { playlist.nome }
         </a>
       </Link>
-      <div className={ style.texto2 }>
+      <div className={ style.texto3 }>
         { playlist.criador }
       </div>
       <div className={ style.texto3 }>
-        { playlist.data_da_criacao }
+        { playlist.status }
+      </div>
+      <div className={ style.texto3 }>
+        { playlist.data_da_criacao.split('T')[0] }
       </div>
       <div className={ style.rodape }>
         <button className={ style.botao }

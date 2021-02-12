@@ -119,13 +119,18 @@ export default function Musica() {
     }
   }
 
+  function submitMusica(e) {
+    e.preventDefault()
+    putMusica()
+  }
+
   return (
     <main className={ style.container }>
       <h1>
         Atualizar Música
       </h1>
 
-      <form className={ style.form }>
+      <form onSubmit={ submitMusica } className={ style.form }>
         <label className={ style.label }>
           Nome da música
         </label>

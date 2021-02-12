@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import jwt from 'jsonwebtoken'
+import { MdAdd } from 'react-icons/md'
 import Artista from '../../components/artista'
 import SideBar from '../../components/sidebar'
 import style from '../../styles/Home.module.css'
@@ -38,11 +39,15 @@ export default function Artistas() {
       
       <div className={ style.lista }>
         <div className={ style.menu }>
-          <h1>Artistas</h1>
+          <div className={ style.titulo }>
+            Artistas
+          </div>
           <div>
             <Link href='/artistas/cadastro'>
               <a>
-                <button>Cadastrar</button>
+                <button className={ style.botaoCriar }>
+                  <MdAdd></MdAdd>Cadastrar
+                </button>
               </a>
             </Link>
           </div>

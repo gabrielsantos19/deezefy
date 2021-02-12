@@ -48,6 +48,7 @@
 .rodape {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
   box-shadow: 0px -3px 10px 5px grey;
 }
 

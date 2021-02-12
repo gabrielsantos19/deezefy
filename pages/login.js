@@ -65,10 +65,19 @@ export default function Login() {
       <h2>{ mensagem }</h2>
       
       {
-        token ? (
-          <div>
-            Logado como: { token.email }
-          </div>
+        token.email ? (
+          <>
+            <div>
+              Logado como:
+            </div>
+            { token.email }
+            <div>
+              <button type='button'
+                onClick={ sair }>
+                Sair
+              </button>
+            </div>
+          </>
         ) : ''
       }
       <form className={ style.form }
@@ -89,11 +98,6 @@ export default function Login() {
             disabled={ !status }
             type='submit'>
           Entrar
-        </button>
-
-        <button type='button'
-          onClick={ sair }>
-          Sair
         </button>
       </form>
         

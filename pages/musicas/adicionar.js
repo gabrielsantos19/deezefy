@@ -48,7 +48,7 @@ export default function AdicionarMusica() {
           <select className={ style.select }
               value={ artistas[index] ? artistas[index] : '' }
               onChange={ e => setArtistaInput(index, e.target.value) }
-              required>
+              >
             <option disabled hidden></option>
             {
               todosArtistas.map(a => (
@@ -90,13 +90,19 @@ export default function AdicionarMusica() {
     }
   }
 
+  function submitMusica(e) {
+    e.preventDefault()
+    adicionar()
+  }
+
   return (
     <main className={ style.container }>
       <h1>
         Adicionar Música
       </h1>
 
-      <form className={ style.form }>
+      <form className={ style.form }
+          onSubmit={ submitMusica }>
         <label className={ style.label }>
           Nome da música
         </label>

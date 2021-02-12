@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 import Link from 'next/link';
+import { MdAdd } from 'react-icons/md'
 import style from '../../styles/Home.module.css'
 import Ouvinte from '../../components/ouvinte'
-import SideBar from '../../components/sidebar';
+import SideBar from '../../components/sidebar'
 
 
 export default function Ouvintes() {
@@ -19,11 +20,15 @@ export default function Ouvintes() {
       
       <div className={ style.lista }>
         <div className={ style.menu }>
-          <h1>Ouvintes</h1>
+          <div className={ style.titulo }>
+            Ouvintes
+          </div>
           <div>
             <Link href='/ouvintes/cadastro'>
               <a>
-                <button>Cadastrar</button>
+                <button className={ style.botaoCriar }>
+                  <MdAdd></MdAdd>Cadastrar
+                </button>
               </a>
             </Link>
           </div>

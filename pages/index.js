@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Link from  'next/link'
 import jwt from 'jsonwebtoken'
+import { MdAdd } from 'react-icons/md'
 import styles from '../styles/Home.module.css'
 import Musica from '../components/musica'
 import SideBar from  '../components/sidebar'
@@ -46,11 +47,15 @@ export default function Home() {
       
       <div className={ styles.lista }>
         <div className={ styles.menu }>
-          <h1>Músicas</h1>
+          <div className={ styles.titulo }>
+            Músicas
+          </div>
           <div>
             <Link href='/musicas/adicionar'>
                 <a>
-                  <button>Criar</button>
+                  <button className={ styles.botaoCriar }>
+                    <MdAdd></MdAdd>Criar
+                  </button>
                 </a>
             </Link>
           </div>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { MdAdd } from 'react-icons/md'
 import Playlist from '../../components/playlist'
 import SideBar from  '../../components/sidebar'
-import Link from 'next/link'
 import style from '../../styles/Home.module.css'
 
 
@@ -29,11 +30,15 @@ export default function Playlists() {
       
       <div className={ style.lista }>
         <div className={ style.menu }>
-          <h1>Playlists</h1>
+          <div className={ style.titulo }>
+            Playlists
+          </div>
           <div>
             <Link href='/playlists/criar'>
               <a>
-                <button>Criar</button>
+                <button className={ style.botaoCriar }>
+                  <MdAdd></MdAdd>Criar
+                </button>
               </a>
             </Link>
           </div>
