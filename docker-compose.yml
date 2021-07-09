@@ -1,6 +1,31 @@
-version: '3.8'
+# deploy com docker swarm após docker build deezefy
+version: '3.9'
 services:
   deezefy:
     image: deezefy
     ports:
-      - '80:3000'
+      - '8081:3000'
+    environment:
+      - 'DB_USER=deezefy'
+      - 'DB_HOST=postgres'
+      - 'DB_DATABASE=deezefy'
+      - 'DB_PASS=h46745h64h67oi47i6'
+      - 'DB_PORT=5432'
+      - 'JWT_SECRET=s8df9s8d4f984sd98f4a98s4'
+
+  postgres:
+    image: postgres
+    environment:
+      - 'POSTGRES_USER=deezefy'
+      - 'POSTGRES_PASSWORD=h46745h64h67oi47i6'
+      - 'POSTGRES_DB=deezefy'
+    volumes:
+      - type: volume
+        source: postgres
+        target: '/var/lib/postgresql/data'
+      - type: bind
+        source: './database/deezefy.sql'
+        target: '/docker-entrypoint-initdb.d/deezefy.sql'
+
+volumes:
+  postgres:
