@@ -1,3 +1,12 @@
+## Deploy on docker
+```
+docker build -t deezefy .
+```
+```
+docker stack deploy -c docker-compose.yml deezefy
+```
+</br></br></br></br>
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
